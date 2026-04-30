@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { apiCall } from "@/services/api";
 
 export interface AuthContextType {
   token: string | null;
@@ -36,28 +37,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const text = await response.text();
-      let data: any = {};
-      if (text) {
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = { error: text };
-        }
-      }
-
-      if (response.ok) {
-        setToken(data.token);
-        setUser(data.user);
-      } else {
-        throw new Error(data.error || "Login failed");
-      }
+      const data = await apiCall("/auth/login", "POST", { email, password });
+      setToken(data.token);
+      setUser(data.user);
     } finally {
       setLoading(false);
     }
@@ -66,28 +48,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (formData: any) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const text = await response.text();
-      let data: any = {};
-      if (text) {
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = { error: text };
-        }
-      }
-
-      if (response.ok) {
-        setToken(data.token);
-        setUser(data.user);
-      } else {
-        throw new Error(data.error || "Registration failed");
-      }
+      const data = await apiCall("/auth/register", "POST", formData);
+      setToken(data.token);
+      setUser(data.user);
     } finally {
       setLoading(false);
     }

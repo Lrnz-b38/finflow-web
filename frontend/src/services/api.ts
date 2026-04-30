@@ -1,4 +1,18 @@
-const API_BASE = "/api";
+const rawApiUrl = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.toString().trim()
+  : "";
+
+if (!rawApiUrl && import.meta.env.MODE !== "development") {
+  console.warn(
+    "[API] VITE_API_URL is not set. The app will use relative /api paths in production."
+  );
+}
+
+const API_BASE = rawApiUrl
+  ? `${rawApiUrl.replace(/\/$/, "")}/api`
+  : "/api";
+
+console.log("[API] API_BASE=", API_BASE);
 
 export const apiCall = async (
   endpoint: string,

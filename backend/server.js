@@ -20,9 +20,19 @@ app.use('/api/accounts', require('./routes/accounts'));
 app.use('/api/transactions', require('./routes/transactions'));
 app.use('/api/chatbot', require('./routes/chatbot'));
 
+// Root endpoint for backend health and quick verification
+app.get('/', (req, res) => {
+  res.json({ status: 'Backend server is running', message: 'Use /api/health or /api/* routes' });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Backend is running' });
+});
+
+// 404 fallback for any unknown backend route
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found', path: req.originalUrl });
 });
 
 const PORT = process.env.PORT || 5000;
