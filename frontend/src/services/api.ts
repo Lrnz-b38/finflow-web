@@ -2,15 +2,11 @@ const rawApiUrl = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL.toString().trim()
   : "";
 
-if (!rawApiUrl && import.meta.env.MODE !== "development") {
-  console.warn(
-    "[API] VITE_API_URL is not set. The app will use relative /api paths in production."
-  );
-}
-
 const API_BASE = rawApiUrl
   ? `${rawApiUrl.replace(/\/$/, "")}/api`
-  : "/api";
+  : import.meta.env.MODE === "development"
+  ? "/api"
+  : "https://finflow-web-production-497f.up.railway.app/api";
 
 console.log("[API] API_BASE=", API_BASE);
 
