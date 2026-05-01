@@ -2,6 +2,7 @@ import "@/styles/global.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "@/context/AuthContext";
 import { useContext } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Pages
 import Login from "@/pages/Auth/Login";
@@ -24,6 +25,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <Analytics />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
