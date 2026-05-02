@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 import {
@@ -11,7 +11,8 @@ import {
   LogOut,
   Menu,
   X,
-  Home,
+  Sun,
+  Moon,
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 
@@ -24,7 +25,22 @@ export default function MainLayout({ children }: MainLayoutProps) {
   const location = useLocation();
   const { logout, user } = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("finflow-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = savedTheme ? savedTheme === "dark" : prefersDark;
+    setDarkMode(theme);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("finflow-theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
+  const toggleTheme = () => setDarkMode((value) => !value);
 
   const navItems = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/" },
@@ -40,12 +56,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="min-h-screen flex flex-col md:flex-row bg-slate-950 text-slate-100">
       {/* Sidebar */}
       <aside
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } bg-gradient-to-b from-primary to-purple-900 text-white transition-all duration-300 flex flex-col`}
+        className={`${sidebarOpen ? "w-64" : "w-20"} bg-gradient-to-b from-primary via-slate-950 to-slate-950 text-white transition-all duration-300 flex flex-col shrink-0`}
       >
         {/* Logo */}
         <div className="p-4 flex items-center justify-between border-b border-purple-700">
@@ -119,15 +133,35 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <div className="bg-white shadow-md px-8 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-800">{user?.businessName || "My Dashboard"}</h2>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="font-semibold text-gray-800">{user?.firstName} {user?.lastName}</p>
-              <p className="text-sm text-gray-600">{user?.email}</p>
+        <div className="bg-slate-900/95 border-b border-slate-800 shadow-sm px-4 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between sticky top-0 z-20">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen((value) => !value)}
+              className="p-2 rounded-2xl bg-slate-800/80 hover:bg-slate-700 transition lg:hidden"
+            >
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+            <div>
+              <h2 className="text-xl font-semibold text-white">{user?.businessName || "FinFlow Dashboard"}</h2>
+              <p className="text-sm text-slate-400">Manage payments, accounts, and connected wallets.</p>
             </div>
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-              {user?.username?.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <button
+              onClick={toggleTheme}
+              className="inline-flex items-center gap-2 rounded-full bg-slate-800/80 px-4 py-2 text-slate-100 hover:bg-slate-700 transition"
+            >
+              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              <span className="text-sm">{darkMode ? "Light mode" : "Dark mode"}</span>
+            </button>
+            <div className="flex items-center gap-3 rounded-2xl bg-slate-800/80 px-4 py-2">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold">
+                {user?.username?.charAt(0).toUpperCase()}
+              </div>
+              <div className="text-sm text-slate-100">
+                <p className="font-semibold">{user?.firstName} {user?.lastName}</p>
+                <p className="text-slate-400">{user?.email}</p>
+              </div>
             </div>
           </div>
         </div>

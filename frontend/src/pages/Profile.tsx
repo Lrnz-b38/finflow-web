@@ -64,30 +64,30 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <div className="max-w-2xl mx-auto space-y-8 px-4 md:px-0">
       <div>
-        <h1 className="text-4xl font-bold text-gray-800">Profile Settings</h1>
-        <p className="text-gray-600 mt-2">Manage your account information</p>
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Profile Settings</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-2">Manage your account information</p>
       </div>
 
       {/* Profile Info */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
           <User className="w-6 h-6" /> Account Information
         </h2>
 
-        <div className="space-y-4 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="space-y-4 mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
           <div>
-            <p className="text-sm text-gray-600">Username</p>
-            <p className="text-lg font-semibold text-gray-800">{user?.username}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400">Username</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">{user?.username}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Email</p>
-            <p className="text-lg font-semibold text-gray-800">{user?.email}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400">Email</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">{user?.email}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Member Since</p>
-            <p className="text-lg font-semibold text-gray-800">
+            <p className="text-sm text-slate-600 dark:text-slate-400">Member Since</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">
               {new Date(user?.createdAt).toLocaleDateString()}
             </p>
           </div>
@@ -95,15 +95,15 @@ export default function Profile() {
       </div>
 
       {/* Edit Profile */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Edit Profile</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Profile</h2>
 
         {message && (
           <div
-            className={`mb-6 p-4 rounded-lg ${
+            className={`mb-6 p-4 rounded-lg border ${
               message.includes("successfully")
-                ? "bg-green-50 border border-green-200 text-green-600"
-                : "bg-red-50 border border-red-200 text-red-600"
+                ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400"
+                : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
             }`}
           >
             <p className="text-sm font-semibold">{message}</p>
@@ -111,58 +111,58 @@ export default function Profile() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">First Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <User className="absolute left-3 top-3 w-5 h-5 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
               <input
                 type="text"
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
             <div className="relative">
-              <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <Phone className="absolute left-3 top-3 w-5 h-5 text-slate-400 dark:text-slate-500" />
               <input
                 type="tel"
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 placeholder="+1 (555) 000-0000"
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Business Name</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Business Name</label>
             <div className="relative">
-              <Building2 className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <Building2 className="absolute left-3 top-3 w-5 h-5 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
                 name="businessName"
                 value={formData.businessName}
                 onChange={handleChange}
                 placeholder="Your Business Inc."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
               />
             </div>
           </div>
@@ -170,7 +170,7 @@ export default function Profile() {
           <button
             type="submit"
             disabled={saving}
-            className="w-full bg-gradient-to-r from-primary to-purple-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary to-green-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save className="w-5 h-5" /> {saving ? "Saving..." : "Save Changes"}
           </button>
@@ -178,13 +178,13 @@ export default function Profile() {
       </div>
 
       {/* Logout */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
         <button
           onClick={() => {
             logout();
             window.location.href = "/login";
           }}
-          className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-all"
+          className="w-full bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-all"
         >
           Logout
         </button>

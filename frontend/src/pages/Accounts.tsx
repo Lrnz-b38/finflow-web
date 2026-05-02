@@ -58,22 +58,22 @@ export default function Accounts() {
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading accounts...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-400">Loading accounts...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 px-4 md:px-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-800">Linked Accounts</h1>
-          <p className="text-gray-600 mt-2">Manage your e-wallet and e-bank accounts</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Linked Accounts</h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-2">Manage your e-wallet and e-bank accounts</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-gradient-to-r from-primary to-purple-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center gap-2"
+          className="bg-gradient-to-r from-primary to-green-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
         >
           <Plus className="w-5 h-5" /> Link Account
         </button>
@@ -91,13 +91,13 @@ export default function Accounts() {
       )}
 
       {accounts.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-lg p-12 text-center animate-slide-in">
-          <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">No Accounts Linked Yet</h3>
-          <p className="text-gray-600 mb-6">Start by linking your first e-wallet or e-bank account</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-12 text-center animate-slide-in border border-slate-200 dark:border-slate-700">
+          <AlertCircle className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">No Accounts Linked Yet</h3>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">Start by linking your first e-wallet or e-bank account</p>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-gradient-to-r from-primary to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all"
+            className="bg-gradient-to-r from-primary to-green-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all"
           >
             Link Your First Account
           </button>
@@ -105,37 +105,37 @@ export default function Accounts() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {accounts.map((account, idx) => (
-            <div key={account._id} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow animate-slide-in">
+            <div key={account._id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold text-gray-800">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                       {account.nickname || account.provider}
                     </h3>
                     {account.accountStatus === "active" ? (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                     ) : (
-                      <Clock className="w-5 h-5 text-yellow-600" />
+                      <Clock className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">Provider: {account.provider}</p>
-                  <p className="text-sm text-gray-600">Email: {account.accountEmail}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Provider: {account.provider}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Email: {account.accountEmail}</p>
                 </div>
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
                     account.accountStatus === "active"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
+                      ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
+                      : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400"
                   }`}
                 >
                   {account.accountStatus.toUpperCase()}
                 </span>
               </div>
 
-              <div className="py-4 border-t border-b border-gray-200 mb-4">
-                <p className="text-sm text-gray-600">Balance</p>
+              <div className="py-4 border-t border-b border-slate-200 dark:border-slate-600 mb-4">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Balance</p>
                 <p className="text-3xl font-bold text-primary">
-                  ${account.balance.toFixed(2)} <span className="text-lg text-gray-600">{account.currency}</span>
+                  ${account.balance.toFixed(2)} <span className="text-lg text-slate-600 dark:text-slate-400">{account.currency}</span>
                 </p>
               </div>
 
@@ -146,11 +146,11 @@ export default function Accounts() {
                     value={newNickname}
                     onChange={(e) => setNewNickname(e.target.value)}
                     placeholder="Enter nickname"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
                   />
                   <button
                     onClick={() => handleUpdateNickname(account._id)}
-                    className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90"
                   >
                     Save
                   </button>
@@ -159,7 +159,7 @@ export default function Accounts() {
                 <div></div>
               )}
 
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 {account.accountStatus !== "active" && (
                   <button
                     onClick={async () => {
@@ -174,7 +174,7 @@ export default function Accounts() {
                         alert("Failed to verify agreement");
                       }
                     }}
-                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 font-semibold"
+                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 font-semibold text-sm"
                   >
                     Verify & Activate
                   </button>
@@ -185,14 +185,14 @@ export default function Accounts() {
                       setEditingAccount(account._id);
                       setNewNickname(account.nickname || "");
                     }}
-                    className="flex-1 px-4 py-2 bg-accent text-white rounded-lg hover:bg-opacity-90 flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 flex items-center justify-center gap-2 text-sm"
                   >
                     <Edit2 className="w-4 h-4" /> Rename
                   </button>
                 )}
                 <button
                   onClick={() => handleDeleteAccount(account._id)}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center gap-2"
+                  className="px-4 py-2 bg-red-500 dark:bg-red-600 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-700 flex items-center justify-center gap-2 text-sm"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

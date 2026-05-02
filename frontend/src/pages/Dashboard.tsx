@@ -29,102 +29,102 @@ export default function Dashboard() {
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-400">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 md:px-0">
       <div>
-        <h1 className="text-4xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back! Here's your financial overview</p>
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Dashboard</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-2">Welcome back! Here's your financial overview</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow animate-slide-in">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm font-medium">Total Balance</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Total Balance</p>
+              <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-2">
                 ${summary?.totalBalance?.toFixed(2) || "0.00"}
               </p>
             </div>
-            <div className="p-4 bg-gradient-to-br from-primary to-purple-600 rounded-full">
-              <Wallet className="w-6 h-6 text-white" />
+            <div className="p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0">
+              <Wallet className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow animate-slide-in">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm font-medium">Linked Accounts</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">{summary?.totalAccounts || 0}</p>
-              <p className="text-xs text-secondary mt-1">{summary?.activeAccounts} Active</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Linked Accounts</p>
+              <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-2">{summary?.totalAccounts || 0}</p>
+              <p className="text-xs text-primary mt-1">{summary?.activeAccounts} Active</p>
             </div>
-            <div className="p-4 bg-gradient-to-br from-secondary to-emerald-600 rounded-full">
-              <CreditCard className="w-6 h-6 text-white" />
+            <div className="p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0">
+              <CreditCard className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow animate-slide-in">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm font-medium">Total Spent</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Total Spent</p>
+              <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-2">
                 ${summary?.totalSpent?.toFixed(2) || "0.00"}
               </p>
             </div>
-            <div className="p-4 bg-gradient-to-br from-accent to-yellow-600 rounded-full">
-              <TrendingUp className="w-6 h-6 text-white" />
+            <div className="p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0">
+              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow animate-slide-in">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm font-medium">Recent Activity</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Recent Activity</p>
+              <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-2">
                 {summary?.recentTransactions?.length || 0}
               </p>
-              <p className="text-xs text-gray-500 mt-1">Last 10 transactions</p>
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Last 10 transactions</p>
             </div>
-            <div className="p-4 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full">
-              <Activity className="w-6 h-6 text-white" />
+            <div className="p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0">
+              <Activity className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Recent Transactions */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Recent Transactions</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 animate-slide-in border border-slate-200 dark:border-slate-700">
+        <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-6">Recent Transactions</h2>
         {summary?.recentTransactions && summary.recentTransactions.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {summary.recentTransactions.map((tx: any) => (
-              <div key={tx._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-full ${tx.type === "debit" ? "bg-red-100" : "bg-green-100"}`}>
-                    <Activity className={`w-5 h-5 ${tx.type === "debit" ? "text-red-600" : "text-green-600"}`} />
+              <div key={tx._id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-600">
+                <div className="flex items-center gap-3 md:gap-4 mb-3 sm:mb-0">
+                  <div className={`p-2 md:p-3 rounded-full flex-shrink-0 ${tx.type === "debit" ? "bg-red-100 dark:bg-red-900/30" : "bg-green-100 dark:bg-green-900/30"}`}>
+                    <Activity className={`w-4 h-4 md:w-5 md:h-5 ${tx.type === "debit" ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`} />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-800">{tx.description || "Transaction"}</p>
-                    <p className="text-sm text-gray-500">{new Date(tx.date).toLocaleDateString()}</p>
+                    <p className="font-semibold text-slate-900 dark:text-white text-sm md:text-base">{tx.description || "Transaction"}</p>
+                    <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400">{new Date(tx.date).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <p className={`text-lg font-bold ${tx.type === "debit" ? "text-red-600" : "text-green-600"}`}>
+                <p className={`text-lg font-bold ${tx.type === "debit" ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}>
                   {tx.type === "debit" ? "-" : "+"} ${tx.amount.toFixed(2)}
                 </p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No transactions yet</p>
+          <p className="text-slate-500 dark:text-slate-400 text-center py-8">No transactions yet</p>
         )}
       </div>
     </div>
