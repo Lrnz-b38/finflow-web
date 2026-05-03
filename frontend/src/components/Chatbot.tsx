@@ -76,7 +76,7 @@ export default function Chatbot({ onClose }: ChatbotProps) {
   };
 
   return (
-    <div className="fixed bottom-0 right-0 w-96 h-96 bg-white rounded-t-2xl shadow-2xl flex flex-col animate-slide-in border border-gray-200">
+    <div className="fixed bottom-0 right-0 w-96 h-96 bg-white dark:bg-slate-800 rounded-t-2xl shadow-2xl flex flex-col animate-slide-in border border-gray-200 dark:border-slate-700">
       {/* Header */}
       <div className="bg-gradient-to-r from-primary to-purple-600 text-white px-4 py-4 rounded-t-2xl flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ export default function Chatbot({ onClose }: ChatbotProps) {
               className={`max-w-xs px-4 py-2 rounded-lg ${
                 msg.type === "user"
                   ? "bg-primary text-white rounded-br-none"
-                  : "bg-gray-100 text-gray-800 rounded-bl-none"
+                  : "bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-100 rounded-bl-none"
               }`}
             >
               <p className="text-sm">{msg.text}</p>
@@ -118,7 +118,7 @@ export default function Chatbot({ onClose }: ChatbotProps) {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg rounded-bl-none">
+            <div className="bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-100 px-4 py-2 rounded-lg rounded-bl-none">
               <div className="flex gap-1">
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
@@ -131,7 +131,7 @@ export default function Chatbot({ onClose }: ChatbotProps) {
       </div>
 
       {/* Input */}
-      <div className="border-t border-gray-200 p-4 bg-gray-50">
+      <div className="border-t border-gray-200 dark:border-slate-700 p-4 bg-gray-50 dark:bg-slate-700">
         <div className="flex gap-2">
           <input
             type="text"
@@ -139,7 +139,7 @@ export default function Chatbot({ onClose }: ChatbotProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             placeholder="Type your message..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-white dark:bg-slate-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
           <button
             onClick={handleSendMessage}

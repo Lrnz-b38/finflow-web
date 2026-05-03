@@ -56,7 +56,7 @@ export default function QRCodeScanner({ onScan, onClose }: QRScannerProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-dark-card rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary to-green-600 text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -104,8 +104,8 @@ export default function QRCodeScanner({ onScan, onClose }: QRScannerProps) {
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 dark:bg-dark-bg px-6 py-4 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="bg-gray-50 dark:bg-slate-700 px-6 py-4 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Position the QR code within the frame to scan
           </p>
         </div>

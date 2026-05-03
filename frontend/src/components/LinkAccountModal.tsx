@@ -56,10 +56,10 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-96 animate-slide-in">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 w-96 animate-slide-in">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Link Account</h2>
-          <button onClick={onClose} className="text-gray-600 hover:text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Link Account</h2>
+          <button onClick={onClose} className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300">
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -74,11 +74,11 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
         {step === "select" && (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Select Provider</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Select Provider</label>
               <select
                 value={provider}
                 onChange={(e) => setProvider(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
               >
                 <option value="">Choose a provider...</option>
                 {providers.map((p) => (
@@ -90,13 +90,13 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Account Email</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Account Email</label>
               <input
                 type="email"
                 value={accountEmail}
                 onChange={(e) => setAccountEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
 
@@ -114,7 +114,7 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
           <div className="space-y-4">
             <div className="text-center py-6">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-gray-600">Linking your {provider} account...</p>
+              <p className="text-gray-600 dark:text-gray-400">Linking your {provider} account...</p>
             </div>
 
             <button
@@ -148,11 +148,11 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-gray-700">Account Details:</p>
-              <div className="bg-gray-50 p-3 rounded-lg text-sm space-y-1">
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Account Details:</p>
+              <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg text-sm space-y-1 text-gray-700 dark:text-gray-300">
                 <p><strong>Provider:</strong> {linkedAccount?.provider}</p>
                 <p><strong>Email:</strong> {linkedAccount?.accountEmail}</p>
-                <p><strong>Status:</strong> <span className="text-yellow-600">Pending Verification</span></p>
+                <p><strong>Status:</strong> <span className="text-yellow-600 dark:text-yellow-500">Pending Verification</span></p>
               </div>
             </div>
 
@@ -166,7 +166,7 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
 
             <button
               onClick={() => setStep("select")}
-              className="w-full border border-gray-300 text-gray-700 font-semibold py-2 rounded-lg hover:bg-gray-50 transition-all"
+              className="w-full border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all"
             >
               Back
             </button>
