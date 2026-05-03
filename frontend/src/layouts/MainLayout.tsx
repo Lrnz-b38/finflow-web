@@ -24,11 +24,14 @@ export default function MainLayout({ children }: MainLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout, user } = useContext(AuthContext);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
+    if (window.innerWidth >= 768) {
+      setSidebarOpen(true);
+    }
     const savedTheme = localStorage.getItem("finflow-theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const theme = savedTheme ? savedTheme === "dark" : prefersDark;
@@ -56,10 +59,20 @@ export default function MainLayout({ children }: MainLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-slate-950 text-slate-100">
+    <div className="min-h-screen flex bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 relative">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`${sidebarOpen ? "w-64" : "w-20"} bg-gradient-to-b from-primary via-slate-950 to-slate-950 text-white transition-all duration-300 flex flex-col shrink-0`}
+        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 md:static md:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:w-64 w-64 bg-gradient-to-b from-primary via-slate-100 to-slate-200 dark:via-slate-950 dark:to-slate-950 text-white flex flex-col`}
       >
         {/* Logo */}
         <div className="p-4 flex items-center justify-between border-b border-purple-700">
@@ -133,11 +146,11 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <div className="bg-slate-900/95 border-b border-slate-800 shadow-sm px-4 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between sticky top-0 z-20">
+        <div className="bg-white/90 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen((value) => !value)}
-              className="p-2 rounded-2xl bg-slate-800/80 hover:bg-slate-700 transition lg:hidden"
+              className="p-2 rounded-2xl bg-slate-800/80 hover:bg-slate-700 transition md:hidden"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>

@@ -1,7 +1,8 @@
 import "@/styles/global.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "@/context/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Pages
 import Login from "@/pages/Auth/Login";
@@ -21,9 +22,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("finflow-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = savedTheme ?? (prefersDark ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, []);
+
   return (
     <Router>
       <AuthProvider>
+        <Analytics />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
