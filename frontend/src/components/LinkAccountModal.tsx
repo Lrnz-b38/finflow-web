@@ -12,15 +12,21 @@ interface LinkAccountModalProps {
 export default function LinkAccountModal({ token, onAccountLinked, onClose }: LinkAccountModalProps) {
   const [step, setStep] = useState<"select" | "link" | "verify">("select");
   const [provider, setProvider] = useState("");
-  const [accountEmail, setAccountEmail] = useState("");
+  const [accountContact, setAccountContact] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [linkedAccount, setLinkedAccount] = useState<any>(null);
 
+  const eWalletProviders = ["GCash", "Maya"];
   const providers = ["PayPal", "GCash", "Maya", "Stripe", "Square", "Other"];
 
+  const isEWallet = eWalletProviders.includes(provider);
+  const contactLabel = isEWallet ? "Mobile Number" : "Email Address";
+  const contactPlaceholder = isEWallet ? "+63 9XX XXX XXXX" : "your@email.com";
+  const contactType = isEWallet ? "tel" : "email";
+
   const handleLink = async () => {
-    if (!provider || !accountEmail) {
+    if (!provider || !accountContact) {
       setError("Please fill in all fields");
       return;
     }
@@ -29,7 +35,7 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
     setError("");
 
     try {
-      const account = await accountApi.link({ provider, accountEmail }, token);
+      const account = await accountApi.link({ provider, accountContact }, token);
       setLinkedAccount(account.account);
       setStep("verify");
     } catch (err: any) {
@@ -90,19 +96,19 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Account Email</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{contactLabel}</label>
               <input
-                type="email"
-                value={accountEmail}
-                onChange={(e) => setAccountEmail(e.target.value)}
-                placeholder="your@email.com"
+                type={contactType}
+                value={accountContact}
+                onChange={(e) => setAccountContact(e.target.value)}
+                placeholder={contactPlaceholder}
                 className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
 
             <button
               onClick={() => setStep("link")}
-              disabled={!provider || !accountEmail}
+              disabled={!provider || !accountContact}
               className="w-full bg-gradient-to-r from-primary to-purple-600 text-white font-semibold py-2 rounded-lg hover:shadow-lg disabled:opacity-50 transition-all"
             >
               Continue
@@ -151,7 +157,7 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Account Details:</p>
               <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg text-sm space-y-1 text-gray-700 dark:text-gray-300">
                 <p><strong>Provider:</strong> {linkedAccount?.provider}</p>
-                <p><strong>Email:</strong> {linkedAccount?.accountEmail}</p>
+                <p><strong>{isEWallet ? "Phone" : "Email"}:</strong> {linkedAccount?.accountContact}</p>
                 <p><strong>Status:</strong> <span className="text-yellow-600 dark:text-yellow-500">Pending Verification</span></p>
               </div>
             </div>

@@ -10,6 +10,7 @@ import Register from "@/pages/Auth/Register";
 import Dashboard from "@/pages/Dashboard";
 import Accounts from "@/pages/Accounts";
 import Transactions from "@/pages/Transactions";
+import Expenses from "@/pages/Expenses";
 import Payment from "@/pages/Payment";
 import Profile from "@/pages/Profile";
 
@@ -65,6 +66,17 @@ function App() {
               <ProtectedRoute>
                 <MainLayout>
                   <Transactions />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/expenses"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Expenses />
                 </MainLayout>
               </ProtectedRoute>
             }

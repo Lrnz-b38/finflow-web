@@ -3,12 +3,15 @@ import { AuthContext } from "@/context/AuthContext";
 import { accountApi } from "@/services/api";
 import { Plus, Trash2, Edit2, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import LinkAccountModal from "@/components/LinkAccountModal";
+import AccountDetailsModal from "@/components/AccountDetailsModal";
 
 export default function Accounts() {
   const { token } = useContext(AuthContext);
   const [accounts, setAccounts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<any>(null);
   const [editingAccount, setEditingAccount] = useState<any>(null);
   const [newNickname, setNewNickname] = useState("");
 
@@ -27,11 +30,16 @@ export default function Accounts() {
     }
   };
 
+  const handleOpenDetails = (account: any) => {
+    setSelectedAccount(account);
+    setShowDetailsModal(true);
+  };
+
   const handleDeleteAccount = async (id: string) => {
     if (confirm("Are you sure you want to unlink this account?")) {
       try {
         await accountApi.unlink(id, token!);
-        setAccounts(accounts.filter(acc => acc._id !== id));
+        setAccounts(accounts.filter((acc) => acc._id !== id));
       } catch (err) {
         alert("Failed to unlink account");
       }
@@ -42,9 +50,11 @@ export default function Accounts() {
     if (newNickname.trim()) {
       try {
         await accountApi.updateNickname(id, newNickname, token!);
-        setAccounts(accounts.map(acc =>
-          acc._id === id ? { ...acc, nickname: newNickname } : acc
-        ));
+        setAccounts(
+          accounts.map((acc) =>
+            acc._id === id ? { ...acc, nickname: newNickname } : acc
+          )
+        );
         setEditingAccount(null);
         setNewNickname("");
       } catch (err) {
@@ -90,6 +100,13 @@ export default function Accounts() {
         />
       )}
 
+      {showDetailsModal && selectedAccount && (
+        <AccountDetailsModal
+          account={selectedAccount}
+          onClose={() => setShowDetailsModal(false)}
+        />
+      )}
+
       {accounts.length === 0 ? (
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-12 text-center animate-slide-in border border-slate-200 dark:border-slate-700">
           <AlertCircle className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto mb-4" />
@@ -105,7 +122,7 @@ export default function Accounts() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {accounts.map((account, idx) => (
-            <div key={account._id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
+            <div key={account._id} onClick={() => handleOpenDetails(account)} className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700 cursor-pointer">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
