@@ -7,6 +7,12 @@ const normalizeApiUrl = (url: string) => {
   return cleaned.endsWith("/api") ? cleaned : `${cleaned}/api`;
 };
 
+const isVercelHost = (host: string) =>
+  host.endsWith(".vercel.app") || host.includes("vercel") || host.endsWith(".vercel.sh");
+
+const isLocalHost = (host: string) =>
+  host.startsWith("localhost") || host.startsWith("127.0.0.1") || host.startsWith("[::1]");
+
 const getDefaultApiBase = () => {
   if (rawApiUrl) {
     const normalized = normalizeApiUrl(rawApiUrl);
@@ -21,18 +27,33 @@ const getDefaultApiBase = () => {
     return "/api";
   }
 
-  if (typeof window !== "undefined" && window.location.host.endsWith(".vercel.app")) {
+  if (typeof window !== "undefined") {
+    const host = window.location.host;
+    if (isVercelHost(host)) {
+      console.warn(
+        "[API] VITE_API_URL is not set. Using Vercel backend path /_/backend/api."
+      );
+      return "/_/backend/api";
+    }
+
+    if (isLocalHost(host)) {
+      console.warn(
+        "[API] VITE_API_URL is not set. Using same-origin path /api for localhost production build."
+      );
+      return "/api";
+    }
+
     console.warn(
-      "[API] VITE_API_URL is not set. Using Vercel backend path /_/backend/api."
+      "[API] VITE_API_URL is not set. Using same-origin API path /api by default. " +
+        "If your backend is deployed elsewhere, set VITE_API_URL to the backend root (without /api)."
     );
-    return "/_/backend/api";
+    return "/api";
   }
 
   console.warn(
-    "[API] VITE_API_URL is not set in production. Falling back to the hardcoded Railway API URL. " +
-      "Set VITE_API_URL in Vercel to your backend URL (without /api)."
+    "[API] VITE_API_URL is not set and window is undefined. Falling back to /api."
   );
-  return "https://finflow-web-production-497f.up.railway.app/api";
+  return "/api";
 };
 
 const API_BASE = getDefaultApiBase();
