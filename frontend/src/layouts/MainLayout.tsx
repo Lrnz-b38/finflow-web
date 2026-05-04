@@ -72,7 +72,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <aside
         className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 md:static md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:w-64 w-64 bg-gradient-to-b from-primary via-slate-100 to-slate-200 dark:via-slate-950 dark:to-slate-950 text-white flex flex-col`}
+        } md:w-64 w-64 bg-gradient-to-b from-primary via-slate-100 to-slate-200 dark:via-slate-950 dark:to-slate-950 text-slate-900 dark:text-white flex flex-col`}
       >
         {/* Logo */}
         <div className="p-4 flex items-center justify-between border-b border-purple-700">
@@ -80,7 +80,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             <div className="p-2 bg-white rounded-lg">
               <Wallet className="w-5 h-5 text-primary" />
             </div>
-            {sidebarOpen && <span className="font-bold text-lg">EWallet</span>}
+            {sidebarOpen && <span className="font-bold text-lg text-slate-900 dark:text-white">EWallet</span>}
           </div>
         </div>
 
@@ -95,8 +95,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 to={item.path}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                   isActive
-                    ? "bg-white text-primary font-semibold"
-                    : "hover:bg-purple-800 text-purple-100"
+                    ? "bg-white text-primary font-semibold dark:bg-slate-900 dark:text-primary"
+                    : "text-slate-900 dark:text-purple-100 hover:bg-slate-100 dark:hover:bg-purple-800"
                 } ${!sidebarOpen && "justify-center"}`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -110,7 +110,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="p-4 border-t border-purple-700">
           <button
             onClick={() => setShowChatbot(!showChatbot)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all hover:bg-purple-800 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-purple-800 ${
               !sidebarOpen && "justify-center"
             }`}
           >
@@ -123,7 +123,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="p-4 border-t border-purple-700">
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all hover:bg-red-600 text-purple-100 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-red-600 ${
               !sidebarOpen && "justify-center"
             }`}
           >
@@ -155,8 +155,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div>
-              <h2 className="text-xl font-semibold text-white">{user?.businessName || "FinFlow Dashboard"}</h2>
-              <p className="text-sm text-slate-400">Manage payments, accounts, and connected wallets.</p>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">{user?.businessName || "FinFlow Dashboard"}</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Manage payments, accounts, and connected wallets.</p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
