@@ -12,6 +12,7 @@ export default function Profile() {
     businessName: "",
   });
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [pictureError, setPictureError] = useState("");
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -42,13 +43,19 @@ export default function Profile() {
 
   const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfilePicture(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    setPictureError("");
+
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setPictureError("Please upload a valid image file (PNG, JPG, JPEG).");
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setProfilePicture(event.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeProfilePicture = () => {
@@ -95,13 +102,53 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 px-4 md:px-0">
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Profile Settings</h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-2">Manage your account information</p>
+    <div className="space-y-8 px-4 md:px-0">
+      {/* Profile Picture Header */}
+      <div className="bg-gradient-to-r from-primary via-green-500 to-primary rounded-2xl shadow-lg p-8 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-slate-950/10"></div>
+        <div className="relative z-10">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full border-4 border-white shadow-2xl bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-16 h-16 text-slate-400 dark:text-slate-500" />
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute -bottom-2 -right-2 w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors shadow-lg"
+              >
+                <Camera className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            {formData.firstName} {formData.lastName}
+          </h1>
+          <p className="text-white/90">{user?.email}</p>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+            className="hidden"
+          />
+          {pictureError && (
+            <div className="mt-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 text-sm text-red-600 dark:text-red-400">
+              {pictureError}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Profile Info */}
+      {/* Main Content */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
           <User className="w-6 h-6" /> Account Information
@@ -128,61 +175,6 @@ export default function Profile() {
       {/* Edit Profile */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Profile</h2>
-
-        {/* Profile Picture */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Picture</h3>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center overflow-hidden">
-                {profilePicture ? (
-                  <img
-                    src={profilePicture}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <User className="w-12 h-12 text-slate-400 dark:text-slate-500" />
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors"
-              >
-                <Camera className="w-4 h-4" />
-              </button>
-              {profilePicture && (
-                <button
-                  type="button"
-                  onClick={removeProfilePicture}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              )}
-            </div>
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                Upload a profile picture to personalize your account
-              </p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleProfilePictureChange}
-                className="hidden"
-              />
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="text-primary hover:text-primary/80 text-sm font-medium"
-              >
-                Change Picture
-              </button>
-            </div>
-          </div>
-        </div>
 
         {/* Biometric Login */}
         <div className="mb-6">

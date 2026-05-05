@@ -19,7 +19,8 @@ export default function Login() {
     setError("");
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      // Redirect to PIN verification instead of dashboard
+      navigate("/pin-verification");
     } catch (err: any) {
       setError(err.message);
     }
@@ -34,6 +35,7 @@ export default function Login() {
           </div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Welcome Back</h1>
           <p className="text-slate-600 dark:text-slate-400 mt-2">Login to your FinFlow account</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">After sign in you'll verify using PIN or fingerprint, just like GCash.</p>
         </div>
 
         {error && (

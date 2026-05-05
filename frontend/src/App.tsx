@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 // Pages
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
+import PinVerification from "@/pages/Auth/PinVerification";
 import Dashboard from "@/pages/Dashboard";
 import Accounts from "@/pages/Accounts";
 import Transactions from "@/pages/Transactions";
@@ -43,6 +44,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/pin-verification" element={<PinVerification />} />
           
           <Route
             path="/"
