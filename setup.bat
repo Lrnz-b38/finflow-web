@@ -46,20 +46,30 @@ REM Final instructions
 echo ======================================================
 echo OK Setup Complete!
 echo.
-echo To start the app:
+echo To BUILD the app:
 echo.
-echo 1. Start MongoDB (if using local)
-echo    mongod
+echo 1. Build Backend (No build needed - Node.js runs directly)
+echo    cd backend
+echo    npm run build
 echo.
-echo 2. Start Backend (Command Prompt 1)
+echo 2. Build Frontend (Creates production bundle)
+echo    cd frontend
+echo    npm run build
+echo.
+echo To START the app in DEVELOPMENT:
+echo.
+echo 1. Start Backend (Command Prompt 1)
 echo    cd backend
 echo    npm run dev
 echo.
-echo 3. Start Frontend (Command Prompt 2)
+echo 2. Start Frontend (Command Prompt 2)
 echo    cd frontend
 echo    npm run dev
 echo.
-echo 4. Open http://localhost:3000 in your browser
+echo 3. Open http://localhost:3000 in your browser
+echo.
+echo IMPORTANT: Make sure MongoDB is accessible
+echo (either locally or via MongoDB Atlas connection string in backend\.env)
 echo.
 echo For detailed instructions, see QUICK_START.md
 echo ======================================================
