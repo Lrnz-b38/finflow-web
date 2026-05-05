@@ -16,6 +16,9 @@ import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import CashIn from "@/pages/CashIn";
 import Transfer from "@/pages/Transfer";
+import PayBills from "@/pages/PayBills";
+import TopUp from "@/pages/TopUp";
+import Savings from "@/pages/Savings";
 
 // Layout
 import MainLayout from "@/layouts/MainLayout";
@@ -135,6 +138,39 @@ function App() {
               <ProtectedRoute>
                 <MainLayout>
                   <Transfer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/pay-bills"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <PayBills />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/top-up"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <TopUp />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/savings"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Savings />
                 </MainLayout>
               </ProtectedRoute>
             }

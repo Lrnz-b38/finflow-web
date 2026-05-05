@@ -15,6 +15,8 @@ import {
   Moon,
   TrendingDown,
   User,
+  Smartphone,
+  PiggyBank,
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 
@@ -53,6 +55,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
     { label: "Transactions", icon: History, path: "/transactions" },
     { label: "Expenses", icon: TrendingDown, path: "/expenses" },
     { label: "Payment", icon: Send, path: "/payment" },
+    { label: "Pay Bills", icon: MessageCircle, path: "/pay-bills" },
+    { label: "Top Up", icon: Smartphone, path: "/top-up" },
+    { label: "Savings", icon: PiggyBank, path: "/savings" },
     { label: "Profile", icon: User, path: "/profile" },
     { label: "Settings", icon: Settings, path: "/settings" },
   ];

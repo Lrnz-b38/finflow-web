@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { authApi } from "@/services/api";
-import { User, Mail, Phone, Building2, Save } from "lucide-react";
+import { User, Mail, Phone, Building2, Save, Camera, X, Fingerprint } from "lucide-react";
 
 export default function Profile() {
   const { token, user, logout } = useContext(AuthContext);
@@ -11,9 +11,12 @@ export default function Profile() {
     phoneNumber: "",
     businessName: "",
   });
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadProfile();
@@ -28,11 +31,35 @@ export default function Profile() {
         phoneNumber: data.phoneNumber || "",
         businessName: data.businessName || "",
       });
+      setProfilePicture(data.profilePicture || null);
+      setBiometricEnabled(data.biometricEnabled || false);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfilePicture(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfilePicture = () => {
+    setProfilePicture(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const toggleBiometric = () => {
+    setBiometricEnabled(!biometricEnabled);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,11 +72,15 @@ export default function Profile() {
     setMessage("");
 
     try {
-      await authApi.updateProfile(formData, token!);
+      await authApi.updateProfile({
+        ...formData,
+        profilePicture,
+        biometricEnabled
+      }, token!);
       setMessage("Profile updated successfully!");
       setTimeout(() => setMessage(""), 3000);
     } catch (err: any) {
-      setMessage(err.message);
+      setMessage(err.message || "Failed to update profile");
     } finally {
       setSaving(false);
     }
@@ -97,6 +128,86 @@ export default function Profile() {
       {/* Edit Profile */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 md:p-8 border border-slate-200 dark:border-slate-700">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Profile</h2>
+
+        {/* Profile Picture */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Picture</h3>
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <div className="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center overflow-hidden">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-12 h-12 text-slate-400 dark:text-slate-500" />
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors"
+              >
+                <Camera className="w-4 h-4" />
+              </button>
+              {profilePicture && (
+                <button
+                  type="button"
+                  onClick={removeProfilePicture}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+            <div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                Upload a profile picture to personalize your account
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-primary hover:text-primary/80 text-sm font-medium"
+              >
+                Change Picture
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Biometric Login */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Security</h3>
+          <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+            <div className="flex items-center gap-3">
+              <Fingerprint className="w-6 h-6 text-slate-600 dark:text-slate-400" />
+              <div>
+                <p className="font-medium text-slate-900 dark:text-white">Biometric Login</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Use face recognition or fingerprint to log in
+                </p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={biometricEnabled}
+                onChange={toggleBiometric}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/25 dark:peer-focus:ring-primary/25 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
 
         {message && (
           <div
