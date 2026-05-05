@@ -6,13 +6,9 @@ export const CURRENCY_RATES = {
   GBP: 0.73,
 };
 
-export const getUserCurrency = () => {
-  // For now, detect based on timezone or IP, but simplify to PHP for Philippines
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (timezone.includes('Asia/Manila')) {
-    return 'PHP';
-  }
-  return 'USD'; // Default
+export const getUserCurrency = (userCurrency?: string) => {
+  // Use user currency if available, otherwise default to USD
+  return userCurrency || 'USD';
 };
 
 export const convertCurrency = (amount: number, from: string, to: string) => {

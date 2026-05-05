@@ -11,7 +11,7 @@ import {
   Calendar,
   PieChart,
 } from "lucide-react";
-import { getUserCurrency, convertCurrency, formatCurrency } from "@/utils/currency";
+import { convertCurrency, formatCurrency } from "@/utils/currency";
 
 interface Expense {
   _id: string;
@@ -31,7 +31,7 @@ interface Budget {
 }
 
 export default function Expenses() {
-  const { token } = useContext(AuthContext);
+  const { token, userCurrency } = useContext(AuthContext);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,8 +41,6 @@ export default function Expenses() {
     limit: 0,
     currency: "USD",
   });
-
-  const userCurrency = getUserCurrency();
 
   useEffect(() => {
     loadExpenses();

@@ -13,6 +13,7 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
   const [step, setStep] = useState<"select" | "link" | "verify">("select");
   const [provider, setProvider] = useState("");
   const [accountContact, setAccountContact] = useState("");
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [linkedAccount, setLinkedAccount] = useState<any>(null);
@@ -46,10 +47,16 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
   };
 
   const handleVerify = async () => {
+    if (!otp || otp.length !== 6 || !/^\d{6}$/.test(otp)) {
+      setError("Please enter a valid 6-digit OTP");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
+      // For prototype, accept any 6-digit OTP
       await accountApi.verifyAgreement(linkedAccount._id, token);
       onAccountLinked({ ...linkedAccount, accountStatus: "active", thirdPartyAgreement: true });
       onClose();
@@ -139,18 +146,28 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
               <div className="flex items-start gap-3">
                 <Lock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-blue-800">
-                  <strong>Third-Party Agreement Required</strong>
+                  <strong>OTP Verification Required</strong>
                   <br />
-                  To complete the linking process, you need to authorize the connection to your {provider} account. This allows us to secure access to your account details and transaction history.
+                  We've sent a 6-digit verification code to your {isEWallet ? "phone" : "email"}. Enter it below to complete the linking process.
                 </p>
               </div>
+            </div>
 
-              <div className="flex items-start gap-3">
-                <FileText className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-blue-800">
-                  By proceeding, you agree to our terms and the third-party API agreement with {provider}.
-                </p>
-              </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Enter 6-digit OTP
+              </label>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="000000"
+                maxLength={6}
+                className="w-full text-center text-2xl font-mono tracking-widest px-4 py-3 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                Enter the code sent to {linkedAccount?.accountContact}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -164,10 +181,10 @@ export default function LinkAccountModal({ token, onAccountLinked, onClose }: Li
 
             <button
               onClick={handleVerify}
-              disabled={loading}
+              disabled={loading || otp.length !== 6}
               className="w-full bg-gradient-to-r from-secondary to-emerald-600 text-white font-semibold py-2 rounded-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2"
             >
-              <CheckCircle className="w-5 h-5" /> {loading ? "Verifying..." : "I Agree & Verify"}
+              <CheckCircle className="w-5 h-5" /> {loading ? "Verifying..." : "Verify & Link Account"}
             </button>
 
             <button

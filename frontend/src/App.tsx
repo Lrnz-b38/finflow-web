@@ -13,6 +13,9 @@ import Transactions from "@/pages/Transactions";
 import Expenses from "@/pages/Expenses";
 import Payment from "@/pages/Payment";
 import Profile from "@/pages/Profile";
+import Settings from "@/pages/Settings";
+import CashIn from "@/pages/CashIn";
+import Transfer from "@/pages/Transfer";
 
 // Layout
 import MainLayout from "@/layouts/MainLayout";
@@ -99,6 +102,39 @@ function App() {
               <ProtectedRoute>
                 <MainLayout>
                   <Profile />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Settings />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/cash-in"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <CashIn />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/transfer"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Transfer />
                 </MainLayout>
               </ProtectedRoute>
             }

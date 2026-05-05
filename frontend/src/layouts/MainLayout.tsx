@@ -14,6 +14,7 @@ import {
   Sun,
   Moon,
   TrendingDown,
+  User,
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 
@@ -52,7 +53,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
     { label: "Transactions", icon: History, path: "/transactions" },
     { label: "Expenses", icon: TrendingDown, path: "/expenses" },
     { label: "Payment", icon: Send, path: "/payment" },
-    { label: "Profile", icon: Settings, path: "/profile" },
+    { label: "Profile", icon: User, path: "/profile" },
+    { label: "Settings", icon: Settings, path: "/settings" },
   ];
 
   const handleLogout = () => {

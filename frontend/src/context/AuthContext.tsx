@@ -1,10 +1,33 @@
 import React, { createContext, useState, useEffect } from "react";
 import { apiCall } from "@/services/api";
 
+const getCurrencyFromCountry = (country: string) => {
+  const currencyMap: { [key: string]: string } = {
+    PH: 'PHP',
+    US: 'USD',
+    GB: 'GBP',
+    EU: 'EUR',
+    SG: 'SGD',
+    MY: 'MYR',
+    TH: 'THB',
+    VN: 'VND',
+    ID: 'IDR',
+    AU: 'AUD',
+    CA: 'CAD',
+    JP: 'JPY',
+    KR: 'KRW',
+    CN: 'CNY',
+    HK: 'HKD',
+    TW: 'TWD',
+  };
+  return currencyMap[country] || 'USD';
+};
+
 export interface AuthContextType {
   token: string | null;
   user: any | null;
   loading: boolean;
+  userCurrency: string;
   login: (email: string, password: string) => Promise<void>;
   register: (data: any) => Promise<void>;
   logout: () => void;
@@ -14,6 +37,7 @@ export const AuthContext = createContext<AuthContextType>({
   token: null,
   user: null,
   loading: true,
+  userCurrency: 'USD',
   login: async () => {},
   register: async () => {},
   logout: () => {},
@@ -25,6 +49,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  const userCurrency = user?.country ? getCurrencyFromCountry(user.country) : 'USD';
 
   useEffect(() => {
     if (token) {
@@ -62,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, loading, userCurrency, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

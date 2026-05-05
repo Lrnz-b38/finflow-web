@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
-import { User, Mail, Lock, Building2, AlertCircle } from "lucide-react";
+import { User, Mail, Lock, Building2, AlertCircle, MapPin } from "lucide-react";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -14,6 +14,10 @@ export default function Register() {
     firstName: "",
     lastName: "",
     businessName: "",
+    country: "",
+    phoneNumber: "",
+    dateOfBirth: "",
+    address: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,6 +140,79 @@ export default function Register() {
                 className="w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Country</label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-2.5 w-4 h-4 text-slate-400 dark:text-slate-500" />
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                required
+              >
+                <option value="">Select your country</option>
+                <option value="PH">Philippines</option>
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="EU">European Union</option>
+                <option value="SG">Singapore</option>
+                <option value="MY">Malaysia</option>
+                <option value="TH">Thailand</option>
+                <option value="VN">Vietnam</option>
+                <option value="ID">Indonesia</option>
+                <option value="AU">Australia</option>
+                <option value="CA">Canada</option>
+                <option value="JP">Japan</option>
+                <option value="KR">South Korea</option>
+                <option value="CN">China</option>
+                <option value="HK">Hong Kong</option>
+                <option value="TW">Taiwan</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
+            <div className="relative">
+              <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-400 dark:text-slate-500" />
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="+1 (555) 123-4567"
+                className="w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Date of Birth</label>
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Address</label>
+            <textarea
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder="Your full address"
+              rows={3}
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400 dark:placeholder-slate-500 resize-none"
+              required
+            />
           </div>
 
           <button
