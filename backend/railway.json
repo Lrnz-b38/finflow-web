@@ -1,0 +1,8 @@
+{
+  "railwayIgnorePatterns": [
+    ".git",
+    ".github",
+    "frontend",
+    "*.md"
+  ]
+}
