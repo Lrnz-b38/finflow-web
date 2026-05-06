@@ -81,20 +81,26 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <aside
         className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 md:static md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:w-64 w-64 bg-gradient-to-b from-primary via-slate-100 to-slate-200 dark:via-slate-950 dark:to-slate-950 text-slate-900 dark:text-white flex flex-col`}
+        } w-64 bg-gradient-to-b from-primary via-slate-100 to-slate-200 dark:via-slate-950 dark:to-slate-950 text-slate-900 dark:text-white flex flex-col`}
       >
         {/* Logo */}
         <div className="p-4 flex items-center justify-between border-b border-purple-700">
-          <div className={`flex items-center gap-3 ${!sidebarOpen && "justify-center w-full"}`}>
+          <div className="flex items-center gap-3">
             <div className="p-2 bg-white rounded-lg">
               <Wallet className="w-5 h-5 text-primary" />
             </div>
-            {sidebarOpen && <span className="font-bold text-lg text-slate-900 dark:text-white">EWallet</span>}
+            <span className="font-bold text-lg text-slate-900 dark:text-white">EWallet</span>
           </div>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden p-1 rounded-lg hover:bg-white/10 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -102,14 +108,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={() => setSidebarOpen(false)} // Close sidebar on mobile after navigation
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                   isActive
                     ? "bg-white text-primary font-semibold dark:bg-slate-900 dark:text-primary"
                     : "text-slate-900 dark:text-purple-100 hover:bg-slate-100 dark:hover:bg-purple-800"
-                } ${!sidebarOpen && "justify-center"}`}
+                }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
-                {sidebarOpen && <span>{item.label}</span>}
+                <span className="truncate">{item.label}</span>
               </Link>
             );
           })}
@@ -119,12 +126,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="p-4 border-t border-purple-700">
           <button
             onClick={() => setShowChatbot(!showChatbot)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-purple-800 ${
-              !sidebarOpen && "justify-center"
-            }`}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-purple-800"
           >
             <MessageCircle className="w-5 h-5 flex-shrink-0" />
-            {sidebarOpen && <span>AI Assistant</span>}
+            <span>AI Assistant</span>
           </button>
         </div>
 
@@ -132,12 +137,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="p-4 border-t border-purple-700">
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-red-600 ${
-              !sidebarOpen && "justify-center"
-            }`}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-900 dark:text-slate-100 hover:bg-red-600"
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
-            {sidebarOpen && <span>Logout</span>}
+            <span>Logout</span>
           </button>
         </div>
 
@@ -190,7 +193,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             {children}
           </div>
         </div>

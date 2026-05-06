@@ -54,7 +54,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [pinEnabled, setPinEnabled] = useState(() => {
-    return localStorage.getItem("pinEnabled") === "true";
+    const stored = localStorage.getItem("pinEnabled");
+    console.log("AuthContext - Initializing pinEnabled from localStorage:", stored);
+    return stored === "true";
   });
 
   const userCurrency = user?.country ? getCurrencyFromCountry(user.country) : 'USD';

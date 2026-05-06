@@ -20,6 +20,12 @@ export default function PinVerification() {
     if (!user) {
       navigate("/login");
     }
+
+    // Debug PIN status
+    const pinEnabled = localStorage.getItem("pinEnabled") === "true";
+    console.log("PinVerification - pinEnabled from localStorage:", pinEnabled);
+    console.log("PinVerification - pinEnabled from context:", pinEnabled);
+    console.log("PinVerification - mode:", pinEnabled ? "verify" : "setup");
   }, [user, navigate]);
 
   const handlePinChange = (value: string) => {

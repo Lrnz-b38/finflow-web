@@ -47,21 +47,23 @@ export default function Dashboard() {
   const QuickActionButton = ({ icon, label, path }: { icon: ReactNode; label: string; path: string }) => (
     <button
       onClick={() => navigate(path)}
-      className="flex flex-col items-center justify-center gap-2 rounded-3xl p-4 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors text-slate-900 dark:text-white"
+      className="flex flex-col items-center justify-center gap-1 sm:gap-2 rounded-2xl sm:rounded-3xl p-3 sm:p-4 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors text-slate-900 dark:text-white min-h-[80px] sm:min-h-[100px]"
     >
-      {icon}
-      <p className="text-sm font-medium">{label}</p>
+      <div className="text-primary text-lg sm:text-xl">
+        {icon}
+      </div>
+      <p className="text-xs sm:text-sm font-medium text-center leading-tight">{label}</p>
     </button>
   );
 
   const ServiceCard = ({ icon, title, description, badge }: { icon: ReactNode; title: string; description: string; badge: string }) => (
-    <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:border-primary hover:shadow-lg transition-all">
-      <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+    <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:border-primary hover:shadow-lg transition-all">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-3 sm:mb-4">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{description}</p>
-      <span className="inline-flex px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">{badge}</span>
+      <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-1 sm:mb-2 line-clamp-2">{title}</h3>
+      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-3 sm:mb-4 line-clamp-2">{description}</p>
+      <span className="inline-flex px-2 py-1 sm:px-3 sm:py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">{badge}</span>
     </div>
   );
 
@@ -77,24 +79,24 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 px-4 md:px-0">
+    <div className="space-y-6 md:space-y-8 px-4 sm:px-6 md:px-0">
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Dashboard</h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-2">Welcome back! Here's your financial overview</p>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Dashboard</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm sm:text-base">Welcome back! Here's your financial overview</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md dark:shadow-lg p-4 sm:p-6 hover:shadow-lg dark:hover:shadow-xl transition-all animate-slide-in border border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Total Balance</p>
-              <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-medium truncate">Total Balance</p>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2 truncate">
                 ${summary?.totalBalance?.toFixed(2) || "0.00"}
               </p>
             </div>
-            <div className="p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0">
-              <Wallet className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            <div className="p-2 sm:p-3 md:p-4 bg-gradient-to-br from-primary to-green-600 rounded-full flex-shrink-0 ml-3">
+              <Wallet className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
             </div>
           </div>
         </div>

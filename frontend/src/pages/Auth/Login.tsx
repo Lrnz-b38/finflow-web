@@ -19,11 +19,21 @@ export default function Login() {
     setError("");
     try {
       await login(formData.email, formData.password);
-      // Redirect to PIN verification only if PIN is enabled
+
+      // Save current theme preference to localStorage
+      const currentTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("finflow-theme", currentTheme);
+
+      // Check PIN status after login
       const pinEnabled = localStorage.getItem("pinEnabled") === "true";
+      console.log("PIN enabled after login:", pinEnabled);
+      console.log("localStorage pinEnabled:", localStorage.getItem("pinEnabled"));
+
       if (pinEnabled) {
+        console.log("Redirecting to PIN verification");
         navigate("/pin-verification");
       } else {
+        console.log("Redirecting to dashboard");
         navigate("/");
       }
     } catch (err: any) {

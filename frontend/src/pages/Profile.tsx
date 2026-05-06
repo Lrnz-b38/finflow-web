@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { authApi } from "@/services/api";
-import { User, Mail, Phone, Building2, Save, Camera, X, Fingerprint } from "lucide-react";
+import { User, Mail, Phone, Building2, Save, Camera, X, Fingerprint, Upload, Grid3X3 } from "lucide-react";
 
 export default function Profile() {
   const { token, user, logout } = useContext(AuthContext);
@@ -17,7 +17,24 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPictureSelector, setShowPictureSelector] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Predefined profile pictures
+  const predefinedPictures = [
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Buster",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Dusty",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Fluffy",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Garfield",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Henry",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Izzy",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Jasper",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Katie",
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Luna",
+  ];
 
   useEffect(() => {
     loadProfile();
@@ -54,8 +71,15 @@ export default function Profile() {
     const reader = new FileReader();
     reader.onload = (event) => {
       setProfilePicture(event.target?.result as string);
+      setShowPictureSelector(false);
     };
     reader.readAsDataURL(file);
+  };
+
+  const selectPredefinedPicture = (pictureUrl: string) => {
+    setProfilePicture(pictureUrl);
+    setPictureError("");
+    setShowPictureSelector(false);
   };
 
   const removeProfilePicture = () => {
@@ -120,15 +144,67 @@ export default function Profile() {
                   <User className="w-16 h-16 text-slate-400 dark:text-slate-500" />
                 )}
               </div>
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute -bottom-2 -right-2 w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors shadow-lg"
-              >
-                <Camera className="w-5 h-5" />
-              </button>
+              <div className="absolute -bottom-2 -right-2 flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setShowPictureSelector(!showPictureSelector)}
+                  className="w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors shadow-lg"
+                  title="Choose from gallery"
+                >
+                  <Grid3X3 className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors shadow-lg"
+                  title="Upload photo"
+                >
+                  <Camera className="w-5 h-5" />
+                </button>
+                {profilePicture && (
+                  <button
+                    type="button"
+                    onClick={removeProfilePicture}
+                    className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg"
+                    title="Remove photo"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+
+          {/* Picture Selector */}
+          {showPictureSelector && (
+            <div className="mb-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+              <h3 className="text-white font-semibold mb-4">Choose a profile picture</h3>
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 max-h-48 overflow-y-auto">
+                {predefinedPictures.map((pic, index) => (
+                  <button
+                    key={index}
+                    onClick={() => selectPredefinedPicture(pic)}
+                    className="w-12 h-12 rounded-full border-2 border-white/50 hover:border-white transition-colors overflow-hidden"
+                  >
+                    <img
+                      src={pic}
+                      alt={`Avatar ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 flex justify-center">
+                <button
+                  onClick={() => setShowPictureSelector(false)}
+                  className="text-white/80 hover:text-white text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
           <h1 className="text-3xl font-bold text-white mb-2">
             {formData.firstName} {formData.lastName}
           </h1>
