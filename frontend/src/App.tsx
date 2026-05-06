@@ -177,7 +177,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-        </Routes>
+          {/* Catch-all route - redirect unknown paths to login */}
+          <Route path="*" element={<Navigate to="/login" />} />        </Routes>
       </AuthProvider>
     </Router>
   );

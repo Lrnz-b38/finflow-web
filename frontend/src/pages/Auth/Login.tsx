@@ -19,8 +19,13 @@ export default function Login() {
     setError("");
     try {
       await login(formData.email, formData.password);
-      // Redirect to PIN verification instead of dashboard
-      navigate("/pin-verification");
+      // Redirect to PIN verification only if PIN is enabled
+      const pinEnabled = localStorage.getItem("pinEnabled") === "true";
+      if (pinEnabled) {
+        navigate("/pin-verification");
+      } else {
+        navigate("/");
+      }
     } catch (err: any) {
       setError(err.message);
     }

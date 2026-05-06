@@ -28,6 +28,8 @@ export interface AuthContextType {
   user: any | null;
   loading: boolean;
   userCurrency: string;
+  pinEnabled: boolean;
+  setPinEnabled: (enabled: boolean) => void;
   login: (email: string, password: string) => Promise<void>;
   register: (data: any) => Promise<void>;
   logout: () => void;
@@ -38,6 +40,8 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   userCurrency: 'USD',
+  pinEnabled: false,
+  setPinEnabled: () => {},
   login: async () => {},
   register: async () => {},
   logout: () => {},
@@ -49,6 +53,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [pinEnabled, setPinEnabled] = useState(() => {
+    return localStorage.getItem("pinEnabled") === "true";
+  });
 
   const userCurrency = user?.country ? getCurrencyFromCountry(user.country) : 'USD';
 
@@ -59,6 +66,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.removeItem("token");
     }
   }, [token]);
+
+  useEffect(() => {
+    if (pinEnabled) {
+      localStorage.setItem("pinEnabled", "true");
+    } else {
+      localStorage.removeItem("pinEnabled");
+    }
+  }, [pinEnabled]);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -85,10 +100,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     setToken(null);
     setUser(null);
+    setPinEnabled(false);
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loading, userCurrency, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, loading, userCurrency, pinEnabled, setPinEnabled, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

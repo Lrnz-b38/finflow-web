@@ -1,17 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
-import { Fingerprint, Lock, AlertCircle, Check } from "lucide-react";
+import { Fingerprint, Lock, AlertCircle, Check, ChevronRight } from "lucide-react";
 
 export default function PinVerification() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useContext(AuthContext);
+  const { user, pinEnabled, setPinEnabled } = useContext(AuthContext);
   const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [useBiometric, setUseBiometric] = useState(false);
   const [verificationMethod, setVerificationMethod] = useState<"pin" | "biometric">("pin");
+  const [mode, setMode] = useState<"setup" | "verify">(pinEnabled ? "verify" : "setup");
 
   useEffect(() => {
     // If no user is authenticated, redirect to login
@@ -37,15 +39,38 @@ export default function PinVerification() {
     setError("");
 
     try {
-      // Simulate PIN verification - in real app, verify with backend
-      if (pin === "123456") {
-        // PIN is correct, proceed to dashboard
+      if (mode === "setup") {
+        // Setup mode - ask for confirmation
+        if (confirmPin === "") {
+          setConfirmPin(pin);
+          setPin("");
+          setLoading(false);
+          return;
+        }
+        // Verify PIN matches
+        if (pin !== confirmPin) {
+          setError("PINs do not match. Please try again.");
+          setPin("");
+          setConfirmPin("");
+          setLoading(false);
+          return;
+        }
+        // PIN setup successful
+        setPinEnabled(true);
         setTimeout(() => {
           navigate("/");
         }, 1500);
       } else {
-        setError("Incorrect PIN. Please try again.");
-        setPin("");
+        // Verify mode - check PIN
+        if (pin === "123456") {
+          // PIN is correct, proceed to dashboard
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
+        } else {
+          setError("Incorrect PIN. Please try again.");
+          setPin("");
+        }
       }
     } catch (err: any) {
       setError(err.message || "PIN verification failed");
@@ -82,7 +107,16 @@ export default function PinVerification() {
   };
 
   const handleBackspace = () => {
-    setPin(pin.slice(0, -1));
+    if (mode === "setup" && confirmPin && pin === "") {
+      setConfirmPin(confirmPin.slice(0, -1));
+    } else {
+      setPin(pin.slice(0, -1));
+    }
+  };
+
+  const handleSkip = () => {
+    setPinEnabled(false);
+    navigate("/");
   };
 
   if (!user) {
@@ -97,8 +131,16 @@ export default function PinVerification() {
           <div className="inline-block p-4 bg-gradient-to-br from-primary to-green-600 rounded-full mb-4">
             <Lock className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Secure Login</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-2">Verify your identity to continue</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {mode === "setup" ? "Set Up PIN" : "Secure Login"}
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-2">
+            {mode === "setup" && confirmPin === ""
+              ? "Create a 6-digit PIN to secure your account"
+              : mode === "setup"
+              ? "Confirm your PIN"
+              : "Enter your 6-digit PIN to verify your identity"}
+          </p>
           {user?.firstName && (
             <p className="text-slate-700 dark:text-slate-300 font-semibold mt-2">
               Welcome, {user.firstName}!
@@ -113,7 +155,8 @@ export default function PinVerification() {
           </div>
         )}
 
-        {/* Verification Method Tabs */}
+        {/* Verification Method Tabs - Only in verify mode */}
+        {mode === "verify" && (
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setVerificationMethod("pin")}
@@ -138,6 +181,17 @@ export default function PinVerification() {
             Biometric
           </button>
         </div>
+        )}
+
+        {/* Skip PIN Setup Button - Only in setup mode when not confirming */}
+        {mode === "setup" && confirmPin === "" && (
+          <button
+            onClick={handleSkip}
+            className="w-full mb-6 px-4 py-2 text-sm text-primary dark:text-blue-400 hover:text-primary-dark dark:hover:text-blue-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          >
+            Skip PIN setup for now
+          </button>
+        )}
 
         {/* PIN Verification */}
         {verificationMethod === "pin" && (
