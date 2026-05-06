@@ -30,13 +30,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("finflow-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = savedTheme ?? (prefersDark ? "dark" : "light");
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, []);
-
+  // Theme is now managed in MainLayout to avoid conflicts
   return (
     <Router>
       <AuthProvider>

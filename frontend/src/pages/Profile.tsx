@@ -147,7 +147,10 @@ export default function Profile() {
               <div className="absolute -bottom-2 -right-2 flex gap-1">
                 <button
                   type="button"
-                  onClick={() => setShowPictureSelector(!showPictureSelector)}
+                  onClick={() => {
+                    console.log("Gallery button clicked, current state:", showPictureSelector);
+                    setShowPictureSelector(!showPictureSelector);
+                  }}
                   className="w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors shadow-lg"
                   title="Choose from gallery"
                 >
@@ -176,34 +179,37 @@ export default function Profile() {
           </div>
 
           {/* Picture Selector */}
-          {showPictureSelector && (
-            <div className="mb-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-              <h3 className="text-white font-semibold mb-4">Choose a profile picture</h3>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 max-h-48 overflow-y-auto">
-                {predefinedPictures.map((pic, index) => (
+          {(() => {
+            console.log("Gallery showing:", showPictureSelector);
+            return showPictureSelector ? (
+              <div className="mb-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <h3 className="text-white font-semibold mb-4">Choose a profile picture</h3>
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 max-h-48 overflow-y-auto">
+                  {predefinedPictures.map((pic, index) => (
+                    <button
+                      key={index}
+                      onClick={() => selectPredefinedPicture(pic)}
+                      className="w-12 h-12 rounded-full border-2 border-white/50 hover:border-white transition-colors overflow-hidden"
+                    >
+                      <img
+                        src={pic}
+                        alt={`Avatar ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-4 flex justify-center">
                   <button
-                    key={index}
-                    onClick={() => selectPredefinedPicture(pic)}
-                    className="w-12 h-12 rounded-full border-2 border-white/50 hover:border-white transition-colors overflow-hidden"
+                    onClick={() => setShowPictureSelector(false)}
+                    className="text-white/80 hover:text-white text-sm"
                   >
-                    <img
-                      src={pic}
-                      alt={`Avatar ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                    Cancel
                   </button>
-                ))}
+                </div>
               </div>
-              <div className="mt-4 flex justify-center">
-                <button
-                  onClick={() => setShowPictureSelector(false)}
-                  className="text-white/80 hover:text-white text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
+            ) : null;
+          })()}
 
           <h1 className="text-3xl font-bold text-white mb-2">
             {formData.firstName} {formData.lastName}

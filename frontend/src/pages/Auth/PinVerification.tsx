@@ -63,6 +63,7 @@ export default function PinVerification() {
         }
         // PIN setup successful
         setPinEnabled(true);
+        localStorage.setItem("setupCompleted", "true");
         setTimeout(() => {
           navigate("/");
         }, 1500);
@@ -122,6 +123,7 @@ export default function PinVerification() {
 
   const handleSkip = () => {
     setPinEnabled(false);
+    localStorage.setItem("setupCompleted", "true");
     navigate("/");
   };
 

@@ -20,20 +20,23 @@ export default function Login() {
     try {
       await login(formData.email, formData.password);
 
-      // Save current theme preference to localStorage
-      const currentTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("finflow-theme", currentTheme);
-
-      // Check PIN status after login
+      // Check if this is first login (no PIN set yet)
       const pinEnabled = localStorage.getItem("pinEnabled") === "true";
-      console.log("PIN enabled after login:", pinEnabled);
-      console.log("localStorage pinEnabled:", localStorage.getItem("pinEnabled"));
+      const hasCompletedSetup = localStorage.getItem("setupCompleted") === "true";
 
-      if (pinEnabled) {
-        console.log("Redirecting to PIN verification");
+      console.log("Login check:", { pinEnabled, hasCompletedSetup });
+
+      if (!hasCompletedSetup) {
+        // First time user - show PIN setup
+        console.log("First login - redirecting to PIN setup");
+        navigate("/pin-verification");
+      } else if (pinEnabled) {
+        // Returning user with PIN - verify PIN
+        console.log("Returning user with PIN - redirecting to PIN verification");
         navigate("/pin-verification");
       } else {
-        console.log("Redirecting to dashboard");
+        // Returning user without PIN - go to dashboard
+        console.log("Returning user without PIN - redirecting to dashboard");
         navigate("/");
       }
     } catch (err: any) {

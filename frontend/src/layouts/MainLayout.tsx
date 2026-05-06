@@ -36,10 +36,14 @@ export default function MainLayout({ children }: MainLayoutProps) {
     if (window.innerWidth >= 768) {
       setSidebarOpen(true);
     }
+    // Load saved theme or use system preference
     const savedTheme = localStorage.getItem("finflow-theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = savedTheme ? savedTheme === "dark" : prefersDark;
-    setDarkMode(theme);
+    const theme = savedTheme || (prefersDark ? "dark" : "light");
+    const isDark = theme === "dark";
+    console.log("Loading theme:", { savedTheme, prefersDark, theme, isDark });
+    setDarkMode(isDark);
+    document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
   useEffect(() => {
